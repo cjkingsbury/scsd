@@ -1,0 +1,72 @@
+<head>
+<title> XTAB uploader - Dr C. J. Kingsbury</title>
+<style>	
+tr, p , h2, caption{
+text-align: center;
+textstyle:bold}
+
+body, form{width:10cm;
+margin:auto}
+
+h3{
+text-align: center}
+
+table{ width:15cm}
+</style>
+</head>
+
+<html>
+<body>
+<br>
+   XTAB
+   <br>
+    <table id='xtab'>
+    
+     <tr><th>  </th><th>val  </th></tr>
+
+<tr><td>File Name                              </td><td>{{d['sample']|safe}}                             </td></tr>
+<tr><td>Chemical Name                          </td><td>{{d['_chemical_name_systematic']|safe}}          </td></tr>
+<tr><td>Chemical Formula                       </td><td>{{d['_chemical_formula_sum']|safe}}              </td></tr>
+<tr><td>Crystal System                         </td><td>{{d['_space_group_crystal_system']|safe}}        </td></tr>
+<tr><td>Space Group                            </td><td>{{d['_space_group_name_H-M_alt']|safe}}          </td></tr>
+<tr><td>Crystal Description                    </td><td>{{d['_exptl_crystal_description']|safe}}         </td></tr>
+<tr><td>Crystal Colour                         </td><td>{{d['_exptl_crystal_colour' ]|safe}}             </td></tr>
+<tr><td><i>a</i> (&#8491;)                     </td><td>{{d['_cell_length_a'       ]|safe}}              </td></tr>
+<tr><td><i>b</i> (&#8491;)                     </td><td>{{d['_cell_length_b'       ]|safe}}              </td></tr>
+<tr><td><i>c</i> (&#8491;)                     </td><td>{{d['_cell_length_c'       ]|safe}}              </td></tr>
+<tr><td>&alpha; (&deg;)                        </td><td>{{d['_cell_angle_alpha'   ]|safe}}               </td></tr>
+<tr><td>&beta; (&deg;)                         </td><td>{{d['_cell_angle_beta'   ]|safe}}                </td></tr>
+<tr><td>&gamma; (&deg;)                        </td><td>{{d['_cell_angle_gamma'   ]|safe}}               </td></tr>
+<tr><td>Volume (&#8491;<sup>3</sup>)          </td><td>{{d['_cell_volume']|safe}}                       </td></tr>
+<tr><td>Crystal Size (mm<sup>3</sup>)          </td><td>{{d['_exptl_crystal_size_max']|safe}} &times; 
+                                                        {{d['_exptl_crystal_size_mid']|safe}} &times;
+                                                        {{d['_exptl_crystal_size_min']|safe}}            </td></tr>
+<tr><td>Density (a.u.)                         </td><td>{{d[ '_exptl_crystal_density_diffrn']|safe}}     </td></tr>
+<tr><td>&mu; (mm<sup>-1</sup>)                 </td><td>{{d[ '_exptl_absorpt_coefficient_mu']|safe}}     </td></tr>
+<tr><td>Absorption Correction                  </td><td>{{d[ '_exptl_absorpt_correction_type ']|safe}}   </td></tr>
+<tr><td>T<sub>min</sub>, T<sub>max</sub>       </td><td>{{d[ '_exptl_absorpt_correction_T_min']|safe}} , 
+                                                        {{d[ '_exptl_absorpt_correction_T_max']|safe}}   </td></tr>
+<tr><td>Temp (K)                               </td><td>{{d['_diffrn_ambient_temperature']|safe}}        </td></tr>
+<tr><td>&lambda; (&#8491;)                     </td><td>{{d['_diffrn_radiation_wavelength']|safe}}       </td></tr>
+<tr><td>Radiation type                         </td><td>{{d['_diffrn_radiation_type']|safe}}             </td></tr>
+<tr><td>Measured Reflections                   </td><td>{{d['_diffrn_reflns_number']|safe}}              </td></tr>
+<tr><td>&Theta;<sub>max</sub>                  </td><td>{{d['_diffrn_reflns_theta_max']|safe}}           </td></tr>
+<tr><td>Scan Mode                              </td><td>  &omega; &amp; &phi;                       </td></tr>
+<tr><td>R<sub>1</sub> (all)                    </td><td>{{d[ '_refine_ls_R_factor_all'        ]|safe}}   </td></tr>
+<tr><td>R<sub>1</sub> (I > 2&sigma;)           </td><td>{{d[ '_refine_ls_R_factor_gt'         ]|safe}}   </td></tr>
+<tr><td>wR<sub>2</sub> (all)                   </td><td>{{d[ '_refine_ls_wR_factor_ref'       ]|safe}}   </td></tr>
+<tr><td>wR<sub>2</sub> (I > 2&sigma;)          </td><td>{{d[ '_refine_ls_wR_factor_gt'         ]|safe}}  </td></tr>
+<tr><td>Goodness of Fit                        </td><td>{{d[ '_refine_ls_goodness_of_fit_ref']|safe}}    </td></tr>
+<tr><td>H atom refinement                      </td><td>{{d[ '_refine_ls_hydrogen_treatment']|safe}}     </td></tr>       
+
+<tr><td>Independent Reflections                </td><td>{{d['_reflns_number_total'   ]|safe}}            </td></tr>
+<tr><td>Independent Reflections (I > 2&sigma;) </td><td>{{d['_reflns_number_gt'   ]|safe}}               </td></tr>
+<tr><td>Max and Min residual                   </td><td>{{d['_refine_diff_density_max']|safe}}, 
+                                                        {{d['_refine_diff_density_min']|safe}}           </td></tr>
+<tr><td>Data / Parameters / Restraints        </td><td>{{d[ '_refine_ls_number_reflns'    ]|safe}} /
+                                                        {{d['_refine_ls_number_parameters' ]|safe}} /
+                                                        {{d['_refine_ls_number_restraints']|safe}}       </td></tr>
+<tr><td>ShelXL Version                         </td><td>{{d['_shelx_SHELXL_version_number']|safe}}       </td></tr>
+    </table>
+   </body>
+   </html>
