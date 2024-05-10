@@ -1,8 +1,17 @@
+# scsd - Symmetry-Coordinate Structural Decomposition for molecules
+# written by Dr. Christopher J. Kingsbury, Trinity College Dublin, with Prof. Dr. Mathias O. Senge
+# cjkingsbury@gmail.com / www.kingsbury.id.au
+#
+# This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+# To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/ or send a letter to
+# Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+#
+
 import sys, numpy as np, pandas as pd, os
 from plotly import graph_objects as go, express as px
 sys.path.append('/Users/kingsbury/work/NSD/')
-from .scsc.scsd import *
-from .scsc.scsd_models_user import *
+from .scsd import *
+from .scsd_models_user import *
 
 
 def find_multiplier_series(seq, ptgr = 'Oh'):
