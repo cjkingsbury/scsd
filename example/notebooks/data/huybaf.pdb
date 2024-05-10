@@ -1,0 +1,49 @@
+HEADER    CSD ENTRY HUYBAF
+CRYST1  14.0667   7.6528  23.0490  90.00  94.27  90.00     P21/c
+SCALE1      0.071090  0.000000  0.005310       0.000000
+SCALE2      0.000000  0.130671  0.000000       0.000000
+SCALE3      0.000000  0.000000  0.043507       0.000000
+HETATM    1  C1  UNK     1      11.694   1.916  11.499  1.00  1.83           C  
+ANISOU    1  C1  UNK     1      228    237    232    -14      0    -15       C  
+HETATM    2  C2  UNK     1      12.050   1.034  13.583  1.00  1.95           C  
+ANISOU    2  C2  UNK     1      250    243    250     -8    -11    -12       C  
+HETATM    3  C9  UNK     1       9.774   2.556  10.577  1.00  2.04           C  
+ANISOU    3  C9  UNK     1      254    285    238     -6    -10      4       C  
+HETATM    4  C10 UNK     1      10.820   3.028   9.752  1.00  2.19           C  
+ANISOU    4  C10 UNK     1      256    323    254     -4     -7     52       C  
+HETATM    5  C11 UNK     1      12.026   2.611  10.278  1.00  1.90           C  
+ANISOU    5  C11 UNK     1      251    243    230    -18     -3    -11       C  
+HETATM    6  C24 UNK     1      10.584   0.672  15.211  1.00  2.29           C  
+ANISOU    6  C24 UNK     1      309    318    244    -19     -2     25       C  
+HETATM    7  C25 UNK     1      11.869   0.595  15.773  1.00  2.54           C  
+ANISOU    7  C25 UNK     1      324    404    239    -17    -34     40       C  
+HETATM    8  C26 UNK     1      12.807   0.797  14.775  1.00  2.16           C  
+ANISOU    8  C26 UNK     1      305    265    253     -5    -22     15       C  
+HETATM    9  B1  UNK     1       9.589   1.158  12.815  1.00  2.03           B  
+ANISOU    9  B1  UNK     1      232    296    245    -20     -4     30       B  
+HETATM   10  N1  UNK     1      10.301   1.880  11.628  1.00  1.88           N  
+ANISOU   10  N1  UNK     1      228    264    223     -3    -16      9       N  
+HETATM   11  N2  UNK     1      12.527   1.482  12.426  1.00  1.88           N  
+ANISOU   11  N2  UNK     1      252    232    229      0    -11    -11       N  
+HETATM   12  N3  UNK     1      10.695   0.932  13.881  1.00  1.99           N  
+ANISOU   12  N3  UNK     1      250    278    229    -20      1     17       N  
+HETATM   13  F1  UNK     1       9.109  -0.073  12.363  1.00  2.60           F  
+ANISOU   13  F1  UNK     1      345    326    318    -88    -50     34       F  
+HETATM   14  F2  UNK     1       8.567   1.923  13.323  1.00  2.59           F  
+ANISOU   14  F2  UNK     1      268    417    298     47     38     48       F  
+CONECT    1    5   10   11
+CONECT    2    8   11   12
+CONECT    3    4   10
+CONECT    4    3    5
+CONECT    5    1    4
+CONECT    6    7   12
+CONECT    7    6    8
+CONECT    8    2    7
+CONECT    9   10   12   13   14
+CONECT   10    1    3    9
+CONECT   11    1    2
+CONECT   12    2    6    9
+CONECT   13    9
+CONECT   14    9
+MASTER        0    0    0    0    0    0    0    3   14    0   14    0
+END

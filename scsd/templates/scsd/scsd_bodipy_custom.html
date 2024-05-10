@@ -1,0 +1,79 @@
+<head>
+<title>SCSD Output - Dr. C. J. Kingsbury</title>
+
+<style>
+img{vertical-align:middle}
+table{ width:10cm}
+table, th, td {
+  text-align: right;
+    margin: auto;
+border-collapse: collapse}
+tr, p , h2, caption{text-align: center;}
+
+</style>
+<script type="text/javascript">
+    function selectElementContents(el) {
+        var body = document.body, range, sel;
+        if (document.createRange && window.getSelection) {
+            range = document.createRange();
+            sel = window.getSelection();
+            sel.removeAllRanges();
+            try {
+                range.selectNodeContents(el);
+                sel.addRange(range);
+            } catch (e) {
+                range.selectNode(el);
+                sel.addRange(range);
+            }
+            document.execCommand("copy");
+
+        } else if (body.createTextRange) {
+            range = body.createTextRange();
+            range.moveToElementText(el);
+            range.select();
+            range.execCommand("Copy");
+        }
+    }
+</script>
+</head>
+<body>
+<br>
+<p>
+<caption>
+Table 1; SCSD parameters derived from the atom positions
+(model is 4-ethynylphenylBODIPY)
+</caption>
+</p>
+<p>
+{{nsd_table|safe}}
+<div style="text-align:center">
+	<button onclick="selectElementContents( document.getElementById('scsd_table') );">Copy Table</button>
+	</div>
+</p>
+<p>
+<img src="data:image/png;base64, {{ mondrian_fig }}" alt="Mondrian diagram" width = "900" height = "700">
+</p>
+
+<p id='pbot'>
+<caption>
+Figure 1; Neoplastic representation of the SCSD parameters
+</caption>
+</p>
+<p>
+{{plotly_fig|safe}}
+</p>
+
+<p>
+<caption>
+Figure 2; Atom positions and symmetric decomposition modes
+</caption>
+</p>
+{{extras|safe}}
+</body>
+
+
+<footer>
+    SCSD online tool &ndash; <a href="https://www.kingsbury.id.au/scsd">kingsbury.id.au/scsd</a>
+    <br>
+     Dr. C. J. Kingsbury, Prof. Dr. M. O. Senge (2021-24),<a href="https://doi.org/10.26434/chemrxiv-2024-6b25s">https://doi.org/10.26434/chemrxiv-2024-6b25s</a>
+    </footer>
