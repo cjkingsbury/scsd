@@ -13,6 +13,7 @@ setup(name='scsd',
           'networkx>=2.2',
           'matplotlib>=3.2.2',
           'seaborn>=0.11.1',
+          'werkzeug>=3.0.3'
       ],
       author='Dr Christopher Kingsbury',
       description='Scientific Data Analysis Toolkit',
