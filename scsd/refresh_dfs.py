@@ -1,13 +1,13 @@
 import sys, numpy as np, pandas as pd, os
 
-output_path = os.path.dirname(__file__) + '/scsd/'
+output_path = os.path.join(os.path.dirname(__file__), 'data/scsd/')
 
 from numpy import array, hstack, round as npround, var, argsort
-from scsd import *
+from .scsd import *
 
 all_motif = []
-ssr_html = '<h2>Available CCDC structures by refcode for SCSD <br> Some examples may appear in multiple databases - contact C.K. for more info </h2>'    
-
+ssr_html = '<h2>Available CCDC structures by refcode for SCSD <br> Some examples may appear in multiple databases - contact C.K. for more info </h2>'
+output_path = os.path.join(os.path.dirname(__file__),'data/scsd/')
 for name, model in model_objs_dict.items():
     if isinstance(model.database_path, str):
         try:

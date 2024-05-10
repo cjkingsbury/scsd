@@ -1,0 +1,46 @@
+<head>
+<title> XTAB uploader - Dr C. J. Kingsbury</title>
+<style>	
+tr, p , h2, caption{
+text-align: center;
+textstyle:bold}
+
+body, form{width:10cm;
+margin:auto}
+
+h3{
+text-align: center}
+
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #E3E4FA;
+  color: black;
+  text-align: center;
+}
+
+table{ width:15cm}
+</style>
+</head>
+
+<html>
+<body>
+<br>
+   XTAB
+   <br>
+   Upload <b>.cif</b> file
+   <form action = "/xtal_table_output" method = "POST" 
+   enctype = "multipart/form-data">
+   <input type = "file" name = "file" />
+					<br>
+   <input type = "submit"/>
+		
+	</form>
+   <br>
+   </body>
+<footer>
+Dr. C. J. Kingsbury, Prof. Dr. M. O. Senge <b>(2021)</b> <i> Article in Preparation</i>
+</footer>
+   </html>

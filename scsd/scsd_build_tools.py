@@ -1,8 +1,8 @@
 import sys, numpy as np, pandas as pd, os
 from plotly import graph_objects as go, express as px
 sys.path.append('/Users/kingsbury/work/NSD/')
-from scsd import *
-from scsd_models_user import *
+from .scsc.scsd import *
+from .scsc.scsd_models_user import *
 
 
 def find_multiplier_series(seq, ptgr = 'Oh'):
