@@ -19,4 +19,4 @@ setup(name='scsd',
       description='Scientific Data Analysis Toolkit',
       long_description='Scientific Data Analysis Toolkit',
       platforms=['linux', 'windows', 'osx', 'cygwin', 'win32'],
-      package_data={'scsd': ['data/*','data/scsd/*', 'templates/scsd/*']}, )
+      package_data={'scsd': ['data/*','data/scsd/*', 'templates/scsd/*', 'static/*','scsd_models.json']}, )
