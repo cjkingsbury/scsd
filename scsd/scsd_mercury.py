@@ -58,8 +58,7 @@ def smarts_count(x):
 def hit_to_html(hit, model, settings=default_settings):
     app = Flask(
         __name__,
-        template_folder=Path(os.path.dirname(os.path.realpath(__file__)))
-        / "./templates/",
+        template_folder=os.path.join(os.path.abspath(os.path.dirname(scsd.__file__)), "templates"),
         static_folder="static",
     )
 

@@ -977,7 +977,8 @@ def nsd_fit_out_correct_numbering(filenm, reference_matrix = ref_str_mat):
 nsdpath = os.path.join(dirpath, 'data', 'nsd_202203.pkl')
 nsdpath_pdb = os.path.join(dirpath, 'data', 'nsd_pdb_min_20200522.pkl')
 nsd_df = pd.read_pickle(nsdpath)
-nsd_df_pdb = pd.read_pickle(nsdpath_pdb)
+# nsd_df_pdb = pd.read_pickle(nsdpath_pdb)
+nsd_df_pdb = None
 
 #Clusters were identified using the CCDC Conquest interface, and exporting lists of refcodes (6-letter structure identifiers)
 #to compare with the refcode identifiers embedded in the above database. The data-merging of the original NSD database (v201911)
