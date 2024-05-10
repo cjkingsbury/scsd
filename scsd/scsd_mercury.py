@@ -12,8 +12,8 @@
 # scsd analysis for the dissymmetric distortion of chemical systems.
 #
 #
-import scsd
-import scsd_models_user
+from . import scsd
+from . import scsd_models_user
 
 from flask import Flask, render_template
 import os
