@@ -55,7 +55,7 @@ def smarts_count(x):
         return int(sum([1 for y in x if y.isalpha()]))
 
 
-def hit_to_html(hit, model, settings=default_settings):
+def hit_to_html(hit, model, settings=default_settings, table_id = 'raw_data'):
     app = Flask(
         __name__,
         template_folder=os.path.join(os.path.abspath(os.path.dirname(scsd.__file__)), "templates"),
@@ -81,6 +81,7 @@ def hit_to_html(hit, model, settings=default_settings):
                 render_template(
                     "/scsd/scsd_hidden_raw_data_section.html",
                     raw_data=scsd_obj.raw_data(),
+                    table_ident=table_id 
                 ),
             )
         )
@@ -139,8 +140,8 @@ def scsd_mercury(settings=default_settings):
 
         if len(hits) > 0:
             interface.update_progress("found " + model.name)
-            for hit in hits:
-                htmls.append(hit_to_html(hit, model))
+            for ix, hit in enumerate(hits):
+                htmls.append(hit_to_html(hit, model, table_id=str(ix)))
 
     with interface.html_report(title=title) as report:
         if len(htmls) > 0:
