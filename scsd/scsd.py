@@ -2098,7 +2098,10 @@ class scsd_collection:
     # requires a model
     def __init__(self, model_input, simple_df=None):
         import pandas as pd
-        import scsd_models_user
+        try:
+            from . import scsd_models_user
+        except ImportError:
+            pass
 
         if isinstance(model_input, scsd_model):
             self.model = model_input
