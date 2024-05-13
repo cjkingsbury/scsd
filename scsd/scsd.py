@@ -5,19 +5,7 @@
 # This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 # To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/ or send a letter to
 # Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
-#
-# To Do List:
-# make 3-fold axis PCAs make sense - there isn't uniformity, and no way to 'normalise' currently
-# comments on the main program aspects
-# remove the * imports
-#
-# Extras
-# some way of generating and preserving custom models for users - done 27/9
-# Figure an easy webserver upload for the new data/version - done 15/3
-# update scsd_direct and easy_database_gen to the new program version - done 15/5
-# "Lacunary" - how to model when a part is missing? The FeMoco is part of this, I guess
 
-# Paths - turn into relative paths at some point
 from os.path import dirname, abspath
 from pathlib import Path
 
@@ -2462,6 +2450,8 @@ class scsd_collection:
 def pdb_link(s):
     return "<a href = https://www.rcsb.org/structure/{}>{}</a>".format(s, s)
 def ccdc_link(s):
+    if "_" in s:
+        return "<a href = https://www.ccdc.cam.ac.uk/structures/Search?Ccdcid={}&DatabaseToSearch=Published>{}</a>".format(s[s.rfind("_") + 1:], s)
     return "<a href = https://www.ccdc.cam.ac.uk/structures/Search?Ccdcid={}&DatabaseToSearch=Published>{}</a>".format(s, s)
 def kb_link(s):
     return "<a href = /scsd/{}>{}</a>".format(s, s)

@@ -1,0 +1,150 @@
+<style> 
+table, th, td {
+font-size = 8pt,
+  text-align: right;
+    margin: auto;
+border-collapse: collapse}
+
+tr, p , h2, caption{
+text-align: center;
+textstyle:bold}
+
+table#tableip tr:nth-child(1) th,
+table#tableip tr:nth-child(2) td,
+table#tableip tr:nth-child(4) td,
+table#tableip tr:nth-child(15) td,
+table#tableoop tr:nth-child(1) th,
+table#tableoop tr:nth-child(2) td,
+table#tableoop tr:nth-child(4) td,
+table#tableoop tr:nth-child(9) td{
+border-bottom: 1px solid #555;
+border-collapse: collapse}
+
+table#alert {border-collapse: collapse}
+table#alert td, table#alert th {
+  border: 1px solid black;
+}
+
+@page { size: A4; margin: 0.5cm 
+}
+@media print {
+    nav { display: none }
+}
+img#skeletal {margin:auto;
+    height: 300px;
+    width: 630px}
+img#mondrian {margin:auto;
+    height: 700px;
+    width: 900px}
+h3{
+text-align: center}
+
+table{ width:10cm}
+</style>
+<script type="text/javascript">
+    function selectElementContents(el) {
+        var body = document.body, range, sel;
+        if (document.createRange && window.getSelection) {
+            range = document.createRange();
+            sel = window.getSelection();
+            sel.removeAllRanges();
+            try {
+                range.selectNodeContents(el);
+                sel.addRange(range);
+            } catch (e) {
+                range.selectNode(el);
+                sel.addRange(range);
+            }
+            document.execCommand("copy");
+
+        } else if (body.createTextRange) {
+            range = body.createTextRange();
+            range.moveToElementText(el);
+            range.select();
+            range.execCommand("Copy");
+        }
+    }
+</script>
+
+<body>
+<p>NSD result generated from file {{pdbpath}} at {{time}} <br>
+
+    Summary of the NSD (in &#8491;):</p>
+    
+<table id='tableip'>
+     <tr><th>basis	</th>
+     <th>&Delta;<sub>ip</sub>	</th>
+     <th>&delta;<sub>ip</sub>	</th>
+     <th>B<sub>2g</sub> 		</th>
+     <th>B<sub>1g</sub> 		</th>
+     <th>E<sub>u</sub>(x)		</th>
+     <th>E<sub>u</sub>(y)		</th>
+     <th>A<sub>1g</sub> 		</th>
+     <th>A<sub>2g</sub>         </th></tr>
+     
+    <tr><td>min.	</td><td>{{nsd[0][6]}}	</td><td>{{nsd[0][7]}}	</td><td>{{nsd[0][0]}}	</td><td>{{nsd[0][1]}}	</td><td>{{nsd[0][2]}}	</td><td>{{nsd[0][3]}}	</td><td>{{nsd[0][4]}}	</td><td>{{nsd[0][5]}}	</td></tr>
+    <tr><td>ext.	</td><td>{{nsd[1][12]}}	</td><td>{{nsd[1][13]}}	</td><td>{{nsd[1][0]}}	</td><td>{{nsd[1][2]}}	</td><td>{{nsd[1][4]}}	</td><td>{{nsd[1][6]}}	</td><td>{{nsd[1][8]}}	</td><td>{{nsd[1][10]}}	</td></tr>
+    <tr><td>        </td><td>           </td><td>         	</td><td>{{nsd[1][1]}}	</td><td>{{nsd[1][3]}}	</td><td>{{nsd[1][5]}}	</td><td>{{nsd[1][7]}}	</td><td>{{nsd[1][9]}}	</td><td>{{nsd[1][11]}}	</td></tr>
+    <tr><td>total	</td><td>{{nsd[3][45]}}	</td><td>{{nsd[3][46]}}	</td><td>{{nsd[3][0]}}	</td><td>{{nsd[3][6]}}	</td><td>{{nsd[3][12]}}	</td><td>{{nsd[3][23]}}	</td><td>{{nsd[3][34]}}	</td><td>{{nsd[3][40]}}	</td></tr>
+    <tr><td>        </td><td>           </td><td>         	</td><td>{{nsd[3][1]}}	</td><td>{{nsd[3][7]}}	</td><td>{{nsd[3][13]}}	</td><td>{{nsd[3][24]}}	</td><td>{{nsd[3][35]}}	</td><td>{{nsd[3][41]}}	</td></tr>
+    <tr><td>        </td><td>           </td><td>         	</td><td>{{nsd[3][2]}}	</td><td>{{nsd[3][8]}}	</td><td>{{nsd[3][14]}}	</td><td>{{nsd[3][25]}}	</td><td>{{nsd[3][36]}}	</td><td>{{nsd[3][42]}}	</td></tr>
+    <tr><td>        </td><td>           </td><td>         	</td><td>{{nsd[3][3]}}	</td><td>{{nsd[3][9]}}	</td><td>{{nsd[3][15]}}	</td><td>{{nsd[3][26]}}	</td><td>{{nsd[3][37]}}	</td><td>{{nsd[3][43]}}	</td></tr>
+    <tr><td>        </td><td>           </td><td>         	</td><td>{{nsd[3][4]}}	</td><td>{{nsd[3][10]}}	</td><td>{{nsd[3][16]}}	</td><td>{{nsd[3][27]}}	</td><td>{{nsd[3][38]}}	</td><td>{{nsd[3][44]}}	</td></tr>
+    <tr><td>        </td><td>           </td><td>         	</td><td>{{nsd[3][5]}}	</td><td>{{nsd[3][11]}}	</td><td>{{nsd[3][17]}}	</td><td>{{nsd[3][28]}}	</td><td>{{nsd[3][39]}}	</td><td>           </td></tr>
+    <tr><td>        </td><td>           </td><td>           </td><td>           </td><td>           </td><td>{{nsd[3][18]}}	</td><td>{{nsd[3][29]}}	</td><td>           </td><td>           </td></tr>
+    <tr><td>        </td><td>           </td><td>           </td><td>           </td><td>           </td><td>{{nsd[3][19]}}	</td><td>{{nsd[3][30]}}	</td><td>           </td><td>           </td></tr>
+    <tr><td>        </td><td>           </td><td>           </td><td>           </td><td>           </td><td>{{nsd[3][20]}}	</td><td>{{nsd[3][31]}}	</td><td>           </td><td>           </td></tr>
+    <tr><td>        </td><td>           </td><td>           </td><td>           </td><td>           </td><td>{{nsd[3][21]}}	</td><td>{{nsd[3][32]}}	</td><td>           </td><td>           </td></tr>
+    <tr><td>        </td><td>           </td><td>           </td><td>           </td><td>           </td><td>{{nsd[3][22]}}	</td><td>{{nsd[3][33]}}	</td><td>           </td><td>           </td></tr>
+    <tr><td>comp.	</td><td>{{nsd[2][6]}}	</td><td>{{nsd[2][7]}}	</td><td>{{nsd[2][0]}}	</td><td>{{nsd[2][1]}}	</td><td>{{nsd[2][2]}}	</td><td>{{nsd[2][3]}}	</td><td>{{nsd[2][4]}}	</td><td>{{nsd[2][5]}}	</td></tr>
+    
+    </table>
+	<br>
+    <table id='tableoop'>
+    
+     <tr><th>basis	</th>
+     <th>&Delta;<sub>oop</sub>	</th>
+     <th>&delta;<sub>oop</sub>	</th>
+     <th>B<sub>2u</sub> 		</th>
+     <th>B<sub>1u</sub> 		</th>
+     <th>A<sub>2u</sub>         </th>
+     <th>E<sub>g</sub>(x)		</th>
+     <th>E<sub>g</sub>(y)		</th>
+     <th>A<sub>1u</sub> 		</th></tr>
+
+    <tr><td>min.	</td><td>{{nsd[4][6]}}	</td><td>{{nsd[4][7]}}	</td><td>{{nsd[4][0]}}	</td><td>{{nsd[4][1]}}	</td><td>{{nsd[4][2]}}	</td><td>{{nsd[4][3]}}	</td><td>{{nsd[4][4]}}	</td><td>{{nsd[4][5]}}	     </tr>
+    <tr><td>ext.	</td><td>{{nsd[5][12]}}	</td><td>{{nsd[5][13]}}	</td><td>{{nsd[5][0]}}	</td><td>{{nsd[5][2]}}	</td><td>{{nsd[5][4]}}	</td><td>{{nsd[5][6]}}	</td><td>{{nsd[5][8]}}	</td><td>{{nsd[5][10]}}	     </tr>
+    <tr><td>        </td><td>           </td><td>         	</td><td>{{nsd[5][1]}}	</td><td>{{nsd[5][3]}}	</td><td>{{nsd[5][5]}}	</td><td>{{nsd[5][7]}}	</td><td>{{nsd[5][9]}}	</td><td>{{nsd[5][11]}}	     </tr>
+    <tr><td>total	</td><td>{{nsd[7][21]}}	</td><td>{{nsd[7][22]}}	</td><td>{{nsd[7][0]}}	</td><td>{{nsd[7][3]}}	</td><td>{{nsd[7][6]}}	</td><td>{{nsd[7][9]}}	</td><td>{{nsd[7][14]}}	</td><td>{{nsd[7][19]}}	     </tr>
+    <tr><td>        </td><td>           </td><td>         	</td><td>{{nsd[7][1]}}	</td><td>{{nsd[7][4]}}	</td><td>{{nsd[7][7]}}	</td><td>{{nsd[7][10]}}	</td><td>{{nsd[7][15]}}	</td><td>{{nsd[7][20]}}	     </tr>
+    <tr><td>        </td><td>           </td><td>         	</td><td>{{nsd[7][2]}}	</td><td>{{nsd[7][5]}}	</td><td>{{nsd[7][8]}}	</td><td>{{nsd[7][11]}}	</td><td>{{nsd[7][16]}}	</td><td>                </tr>
+    <tr><td>        </td><td>           </td><td>           </td><td>           </td><td>           </td><td>			</td><td>{{nsd[7][12]}}	</td><td>{{nsd[7][17]}}	</td><td>                </tr>
+    <tr><td>        </td><td>           </td><td>           </td><td>           </td><td>           </td><td>			</td><td>{{nsd[7][13]}}	</td><td>{{nsd[7][18]}}	</td><td>                </tr>
+    <tr><td>comp.	</td><td>{{nsd[6][6]}}	</td><td>{{nsd[6][7]}}	</td><td>{{nsd[6][0]}}	</td><td>{{nsd[6][1]}}	</td><td>{{nsd[6][2]}}	</td><td>{{nsd[6][3]}}	</td><td>{{nsd[6][4]}}	</td><td>{{nsd[6][5]}}	     </tr>
+    
+    </table>
+    
+<p>
+<img id = 'skeletal' src="data:image/png;base64, {{ skeletal_fig }}" alt="Skeletal diagram">
+
+</p>
+<p id='pbot'>
+<caption>
+Figure 1; (a) out-of-plane and (b) in-plane skeletal plots of the porphyrin core. 
+<br>
+Porphyrin is represented in black(C) and blue(N), with the reference structure (CuTPP) in red 
+dotted lines.
+</caption>
+</p>
+
+{{extras|safe}}
+
+</body>
+
+<footer>
+<p>
+Document prepared by the porphyrin NSD online tool &ndash; <a href = https://www.sengegroup.eu/nsd>https://www.sengegroup.eu/nsd</a>
+<br>
+<a href = "https://doi.org/10.1016/j.ccr.2020.213760">https://doi.org/10.1016/j.ccr.2020.213760.</a>
+</p>
+</footer>

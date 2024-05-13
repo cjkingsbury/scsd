@@ -21,9 +21,9 @@ textarea {
     <button onclick="show{{table_ident}}()">show SCSD values</button>
     </div>
 <div style = "text-align:center;">
- <textarea wrap='hard' readonly = True cols = 80 rows = 40 id="{{table_ident}}" name="raw_data">
+ <textarea wrap='hard' readonly = True cols = 80 rows = 40 id="{{table_ident}}" name="{{table_ident}}">
 {{raw_data|safe}}
 </textarea>
 </div>
-<script>document.getElementById({{table_ident}}).style.display = "none";
+<script>document.getElementById("{{table_ident}}").style.display = "none";
 </script>
