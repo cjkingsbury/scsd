@@ -25,8 +25,7 @@ import argparse
 from ccdc.io import MoleculeReader
 
 from pandas import DataFrame
-from scsd.scsd import scsd_matrix
-from scsd.scsd import model_objs_dict, scsd_model
+from scsd.scsd import scsd_matrix, model_objs_dict, scsd_model
 
 def run_scsd_single_cl():
     parser = argparse.ArgumentParser()
@@ -57,7 +56,7 @@ def run_scsd_single_cl():
             source = csd_reader.molecule(ident.upper())
             source.assign_bond_types(which='unknown')
 
-        #dfs_path = settings.get('dfs_path', '')
+        # dfs_path = settings.get('dfs_path', '')
 
         ats = array([[*x.coordinates,x.atomic_symbol] for x in source.atoms])
         model = model_objs_dict.get(args.model,None)
