@@ -1,3 +1,8 @@
+
+#
+# This work is licensed under THE ANTI-CAPITALIST SOFTWARE LICENSE (v 1.4) 
+# To view a copy of this license, visit https://directory.fsf.org/wiki/License:ANTI-1.4
+
 import numpy as np
 
 def ellipsoid_from_df(v1, v2, df): return (np.array([np.mean(df[v1].values),np.mean(df[v2].values)]), np.cov(df[v1].values, df[v2].values)) 

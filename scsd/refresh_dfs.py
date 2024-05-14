@@ -1,3 +1,8 @@
+
+#
+# This work is licensed under THE ANTI-CAPITALIST SOFTWARE LICENSE (v 1.4) 
+# To view a copy of this license, visit https://directory.fsf.org/wiki/License:ANTI-1.4
+
 import pandas as pd
 import os
 
