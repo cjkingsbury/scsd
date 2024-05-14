@@ -1,13 +1,4 @@
 #
-# Th script can be used for any purpose without limitation subject to the
-# conditions at http://www.ccdc.cam.ac.uk/Community/Pages/Licences/v2.aspx
-#
-# This permission notice and the following statement of attribution must be
-# included in all copies or substantial portions of this script.
-#
-# 2023-04-25 Created by Chris Kingsbury, the Cambridge Crystallographic Data Centre
-# ORCID 0000-0002-4694-5566
-#
 # scsd - Symmetry-Coordinate Structural Decomposition for molecules
 # written by Dr. Christopher J. Kingsbury, Trinity College Dublin, with Prof. Dr. Mathias O. Senge
 # cjkingsbury@gmail.com / www.kingsbury.id.au
@@ -15,7 +6,6 @@
 # This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 # To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/ or send a letter to
 # Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
-#
 #
 #
 

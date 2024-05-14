@@ -1,6 +1,6 @@
 from os import getcwd
 import os
-from time import time, ctime, sleep
+from time import time, ctime
 from pandas import read_pickle
 from datetime import date
 from importlib import reload
@@ -10,20 +10,17 @@ from flask import (
     request,
     url_for,
     send_from_directory,
-    redirect,
-    send_file,
+    redirect
 )
 
 from numpy import random, sqrt, unique
-from pandas import read_pickle
-import sys
-print(sys.path)
+
 from . import scsd
 from . import scsd_models_user
 from .nsd import nsd_obj, write_logfile
 
 try:
-    from flask_weasyprint import HTML, render_pdf, CSS
+    from flask_weasyprint import HTML, render_pdf
 except ImportError:
     print("flask_weasyprint not available - pdf output disabled")
 
