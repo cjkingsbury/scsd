@@ -1040,7 +1040,7 @@ e_group_parent_multi = {
 }
 
 e_group_unique_sets = {
-    "D2d": [["Ex", "Ey", "Ex+y", "Ex-y"]],
+    "D2d": [["Ex", "Ey"], ["Ex+y", "Ex-y"]],
     "C3v": [["E1"], ["E2"], ["E3"]],
     "C4v": [["Ex", "Ey"], ["Ex+y", "Ex-y"]],
     "D3d": [["Eg1", "Eu1", "Eu4"], ["Eg2", "Eu2", "Eu5"], ["Eg3", "Eu3", "Eu6"]],

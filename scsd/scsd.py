@@ -1125,6 +1125,12 @@ class scsd_matrix:
                 [scsd_simple.pop(x) for x in ["Ex+y", "Ex-y"]]
             else:
                 [scsd_simple.pop(x) for x in ["Ex", "Ey"]]
+        if self.ptgr == "D2d":
+            ev = [scsd_simple.get(x) for x in "Ex,Ey,Ex+y,Ex-y".split(",")]
+            if np.argmax(ev) < 1.5:
+                [scsd_simple.pop(x) for x in ["Ex+y", "Ex-y"]]
+            else:
+                [scsd_simple.pop(x) for x in ["Ex", "Ey"]]
 
         scsd_simple.pop("Atom Posits Data", False)
         self.scsd_simple = scsd_simple
