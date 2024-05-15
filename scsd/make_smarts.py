@@ -32,6 +32,9 @@ replacements = {
 }
 
 repl_2 = {f"~{str(x)}": f"{str(x)}~" for x in range(1, 10)}
+repl_2a = {f"~%{str(x)}": f"%{str(x)}~" for x in range(10, 99)}
+repl_2.update(repl_2a)
+
 repl_3 = {
     "~)": ")~",
     "~=": "~",

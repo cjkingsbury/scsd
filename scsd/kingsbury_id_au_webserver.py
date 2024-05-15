@@ -1,6 +1,9 @@
+# This work is licensed under THE ANTI-CAPITALIST SOFTWARE LICENSE (v 1.4) 
+# To view a copy of this license, visit https://directory.fsf.org/wiki/License:ANTI-1.4
+
 from os import getcwd
 import os
-from time import time, ctime, sleep
+from time import time, ctime
 from pandas import read_pickle
 from datetime import date
 from importlib import reload
@@ -10,34 +13,38 @@ from flask import (
     request,
     url_for,
     send_from_directory,
-    redirect,
-    send_file,
+    redirect
 )
 
 from numpy import random, sqrt, unique
-from pandas import read_pickle
 
 from . import scsd
 from . import scsd_models_user
 from .nsd import nsd_obj, write_logfile
 
 try:
-    from flask_weasyprint import HTML, render_pdf, CSS
+    from flask_weasyprint import HTML, render_pdf
 except ImportError:
     print("flask_weasyprint not available - pdf output disabled")
 
 lib_folder = os.path.abspath(os.path.dirname(__file__))
 
-app = Flask(__name__, template_folder=os.path.join(lib_folder,'templates'),
-            static_folder='static', static_url_path='')
+app = Flask(
+    __name__,
+    template_folder=os.path.join(lib_folder, "templates"),
+    static_folder="static",
+    static_url_path="",
+)
 
+from pathlib import Path
 
-u_folder = os.path.join(lib_folder,'data','temp')
-dfs_path = os.path.join(lib_folder,'data','scsd')
+u_folder = os.path.join(lib_folder, "data", "temp")
+dfs_path = os.path.join(lib_folder, "data", "scsd")
 dfs_path += r"/"
 u_folder += r"/"
 
-@app.route('/nsd', methods=['GET'])
+
+@app.route("/nsd", methods=["GET"])
 def upload_file():
     return render_template(
         "/nsd/nsd_uploader.html",
@@ -197,9 +204,9 @@ def scsd_out():
             data.get("basinhopping") == "True", by_graph=data.get("by_graph") == "True"
         )
         extras = scsd_obj.compare_table(data_path=dfs_path) + render_template(
-            "/scsd/scsd_hidden_raw_data_section.html", raw_data=scsd_obj.raw_data(),
-        table_ident='raw_data'
-
+            "/scsd/scsd_hidden_raw_data_section.html",
+            raw_data=scsd_obj.raw_data(),
+            table_ident="raw_data",
         )
 
         template = "/scsd/scsd_html_template_v2.html"
@@ -248,7 +255,7 @@ def scsd_ccdc_out(refcode):
     try:
         df = read_pickle(dfs_path + model.database_path)
     except FileNotFoundError:
-        return "Database not on this server - contact Chris Kingsbury at ckingsbu@tcd.ie for data"
+        return "Database not on this server - contact Chris Kingsbury at ckingsbury@ccdc.cam.ac.uk for data"
     # scsd_obj = scsd.scsd_matrix(df[df['NAME'].isin([refcode, refcode.upper()])]['coords_matrix'].values[0], model)
     dfrow = df[df["name"].isin([refcode, refcode.upper()])]
     if len(dfrow) == 2:
@@ -264,8 +271,9 @@ def scsd_ccdc_out(refcode):
     else:
         extras = scsd_obj.compare_table(data_path=dfs_path)
     extras = extras + render_template(
-        "/scsd/scsd_hidden_raw_data_section.html", raw_data=scsd_obj.raw_data(),
-        table_ident='raw_data'
+        "/scsd/scsd_hidden_raw_data_section.html",
+        raw_data=scsd_obj.raw_data(),
+        table_ident="raw_data",
     )
     data = {"model_name": model.name, "refcode": refcode}
     template = "/scsd//scsd_html_template_v2.html"
@@ -303,7 +311,7 @@ def scsd_ccdc_recalc(refcode):
     try:
         df = read_pickle(dfs_path + model.database_path)
     except FileNotFoundError:
-        return "Database not on this server - contact Chris Kingsbury at ckingsbu@tcd.ie for data"
+        return "Database not on this server - contact Chris Kingsbury at ckingsbury@ccdc.cam.ac.uk for data"
     # scsd_obj = scsd.scsd_matrix(df[df['NAME'].isin([refcode, refcode.upper()])]['coords_matrix'].values[0], model)
     dfrow = df[df["name"].isin([refcode, refcode.upper()])]
     scsd_obj = scsd.scsd_matrix(dfrow["coords"].values[0], model)
@@ -317,8 +325,9 @@ def scsd_ccdc_recalc(refcode):
     else:
         extras = scsd_obj.compare_table(data_path=dfs_path)
     extras = extras + render_template(
-        "/scsd/scsd_hidden_raw_data_section.html", raw_data=scsd_obj.raw_data(),
-        table_ident='raw_data'
+        "/scsd/scsd_hidden_raw_data_section.html",
+        raw_data=scsd_obj.raw_data(),
+        table_ident="raw_data",
     )
     data = {"model_name": model.name, "refcode": refcode}
     template = "/scsd//scsd_html_template_v2.html"
@@ -358,7 +367,7 @@ def scsd_ccdc_random():
     try:
         df = read_pickle(dfs_path + model.database_path)
     except FileNotFoundError:
-        return "Database not on this server - contact Chris Kingsbury at ckingsbu@tcd.ie for data"
+        return "Database not on this server - contact Chris Kingsbury at ckingsbury@ccdc.cam.ac.uk for data"
     dfrow = df[df["name"].isin([refcode, refcode.upper()])]
     scsd_obj = scsd.scsd_matrix(dfrow["coords"].values[0], model)
     scsd_obj.calc_scsd(False, bypass=True)
@@ -369,8 +378,9 @@ def scsd_ccdc_random():
     else:
         extras = scsd_obj.compare_table(data_path=dfs_path)
     extras = extras + render_template(
-        "/scsd/scsd_hidden_raw_data_section.html", raw_data=scsd_obj.raw_data(),
-        table_ident='raw_data'
+        "/scsd/scsd_hidden_raw_data_section.html",
+        raw_data=scsd_obj.raw_data(),
+        table_ident="raw_data",
     )
     data = {"model_name": model.name, "refcode": refcode}
     template = "/scsd//scsd_html_template_v2.html"
@@ -428,8 +438,9 @@ def scsd_mod_out():
         reload(scsd_models_user)
 
         extras = render_template(
-            "/scsd/scsd_hidden_raw_data_section.html", raw_data="\n".join(for_mod_usr),
-        table_ident='raw_data'
+            "/scsd/scsd_hidden_raw_data_section.html",
+            raw_data="\n".join(for_mod_usr),
+            table_ident="raw_data",
         )
 
         # template = model_templates.get(data.get('model_name'),'/scsd_html_template_v2.html')
@@ -455,7 +466,7 @@ def scsd_mod_lookup(model_name):
     extras = render_template(
         "/scsd/scsd_hidden_raw_data_section.html",
         raw_data="\n".join(["#" + model_name + " " + tstamp, model.importable()]),
-        table_ident='raw_data'
+        table_ident="raw_data",
     )
 
     if model.database_path is not None:
@@ -470,7 +481,7 @@ def scsd_mod_lookup(model_name):
         except FileNotFoundError:
             extras = (
                 extras
-                + "<br> Database not on this server - contact Chris Kingsbury at ckingsbu@tcd.ie for data"
+                + "<br> Database not on this server - contact Chris Kingsbury at ckingsbury@ccdc.cam.ac.uk for data"
             )
     html = render_template(
         "/scsd/scsd_model_report.html",
@@ -508,7 +519,7 @@ def scsd_mod_ext(model_name):
                 raw_data="\n".join(
                     ["#" + model_name + " " + tstamp, model.importable()]
                 ),
-        table_ident='raw_data'
+                table_ident="raw_data",
             )
 
             df = coll.gen_complex_df()
@@ -531,7 +542,7 @@ def scsd_mod_ext(model_name):
         except FileNotFoundError:
             extras = (
                 extras
-                + "<br> Database not on this server - contact Chris Kingsbury at ckingsbu@tcd.ie for data"
+                + "<br> Database not on this server - contact Chris Kingsbury at ckingsbury@ccdc.cam.ac.uk for data"
             )
     html = render_template(
         "/scsd/scsd_model_report.html",
@@ -552,7 +563,7 @@ def scsd_data(model_name):
     try:
         return send_from_directory(dfs_path, model.database_path, as_attachment=True)
     except FileNotFoundError:
-        return "Database not on this server - contact Chris Kingsbury at ckingsbu@tcd.ie for data"
+        return "Database not on this server - contact Chris Kingsbury at ckingsbury@ccdc.cam.ac.uk for data"
 
 
 @app.route("/scsd_models_table", methods=["GET"])
@@ -644,9 +655,10 @@ def return_s6():
 
 def start_server():
     import webbrowser
-    webbrowser.open_new('http://localhost:5050/scsd_random')
-    app.run(host='0.0.0.0', port=5050)
+
+    webbrowser.open_new("http://localhost:5050/scsd_random")
+    app.run(host="0.0.0.0", port=5050)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     start_server()

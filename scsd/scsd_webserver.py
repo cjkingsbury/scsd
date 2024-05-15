@@ -2,10 +2,8 @@
 # written by Dr. Christopher J. Kingsbury, Trinity College Dublin, with Prof. Dr. Mathias O. Senge
 # cjkingsbury@gmail.com / www.kingsbury.id.au
 #
-# This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
-# To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/ or send a letter to
-# Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
-#
+# This work is licensed under THE ANTI-CAPITALIST SOFTWARE LICENSE (v 1.4) 
+# To view a copy of this license, visit https://directory.fsf.org/wiki/License:ANTI-1.4
 
 from flask import (
     Flask,
@@ -17,26 +15,163 @@ from flask import (
 )
 from datetime import date
 from importlib import reload
-import scsd
-import scsd_models_user
+from time import time, ctime
 
-# import nsd
-# from time import time, ctime
 import os
 from pandas import read_pickle
 from numpy import sqrt, random, unique
 
+from . import scsd
+from . import scsd_models_user
+from .nsd import nsd_obj, write_logfile
+
+
 from pathlib import Path
 
-fpath = os.path.abs(os.path.dirname(__file__))
+lib_folder = Path(os.path.abspath(os.path.dirname(__file__)))
 
-u_folder = os.path.join(fpath ,"data","temp")
-dfs_path = os.path.join(fpath ,"data","scsd")
-u_folder += r"\\"
-dfs_path += r"\\"
+app = Flask(
+    __name__,
+    template_folder=str(lib_folder / "templates"),
+    static_folder="static",
+    static_url_path="",
+)
 
-app = Flask(__name__)
 
+u_folder = lib_folder / "data" / "temp"
+dfs_path = lib_folder / "data" / "scsd"
+
+
+@app.route("/nsd", methods=["GET"])
+def upload_file():
+    return render_template(
+        "/nsd/nsd_uploader.html",
+        nsdlogopath=url_for("static", filename="nsdlogo.png"),
+        sengelogopath=url_for("static", filename="sengelogo.jpg"),
+    )
+
+
+@app.route("/nsd_output", methods=["GET", "POST"])
+def uploaded_file():
+    if request.method == "POST":
+        f = request.files["file"]
+        data = request.form
+        tstamp = str(int(time()))
+        f.save(u_folder + f.filename)
+
+        if data.get("IUPAC_numbering"):
+            nsd_object = nsd_obj(
+                filenm=u_folder + f.filename, calctype="correct_numbering"
+            )
+        elif data.get("errorbars"):
+            nsd_object = nsd_obj(filenm=u_folder + f.filename, calctype="errorbars")
+        else:
+            nsd_object = nsd_obj(filenm=u_folder + f.filename, calctype="pdb")
+        nsd_object.calc_nsd()
+
+        write_logfile(f.filename, nsd_object.nsd_matrix, u_folder[:-5] + "logfile.txt")
+
+        html = render_template(
+            "/nsd/nsd_html_template_v5.html",
+            pdbpath=f.filename,
+            time=ctime(time()),
+            nsd=nsd_object.nsd_matrix,
+            skeletal_fig=nsd_object.nsd_fig(),
+            extras=nsd_object.extras(
+                data["validtype"],
+                data.get("rounding"),
+                data.get("keith"),
+                cmap=data.get("cmap"),
+            ),
+        )
+
+        if data["outtype"] == "html":
+            return html
+        elif data["outtype"] == "pdf":
+            return html
+            # return render_pdf(
+            #     HTML(string=html), download_filename=f.filename[:-4] + "_nsd.pdf"
+            # )
+            # return redirect(url_for('nsd'))
+
+
+@app.route("/nsd_ccdc", methods=["GET"])
+def upload_file_ccdc():
+    return render_template("/nsd/nsd_ccdc_uploader.html")
+
+
+fail_html = "Structure not in database (v2020.1) check structure code"
+
+
+@app.route("/nsd_output_ccdc", methods=["GET", "POST"])
+def uploaded_file_ccdc():
+    if request.method == "POST":
+        data = request.form
+        tstamp = str(int(time()))
+        try:
+            nsd_object = nsd_obj(refcode=data.get("NAME_str").upper(), calctype="ccdc")
+            nsd_object.calc_nsd()
+        except IndexError:
+            return fail_html
+
+        html = render_template(
+            "/nsd/nsd_html_template_v5.html",
+            pdbpath=data.get("NAME_str").upper(),
+            time=ctime(time()),
+            nsd=nsd_object.nsd_matrix,
+            skeletal_fig=nsd_object.nsd_fig(),
+            extras=nsd_object.extras(
+                data["validtype"],
+                data.get("rounding"),
+                data.get("keith"),
+                cmap=data.get("cmap"),
+            ),
+        )
+        if data["outtype"] == "html":
+            return html
+        elif data["outtype"] == "pdf":
+            return html
+            # return render_pdf(
+            #     HTML(string=html),
+            #     download_filename=data.get("NAME_str").upper() + "_nsd.pdf",
+            # )
+            # return redirect(url_for('nsd'))
+
+
+@app.route("/nsd/<refcode>", methods=["GET", "POST"])
+def database_direct_ccdc(refcode):
+    try:
+        nsd_object = nsd_obj(refcode=refcode.upper(), calctype="ccdc")
+        nsd_object.calc_nsd()
+    except IndexError:
+        return fail_html
+
+    extras = "\n".join(
+        [
+            nsd_object.alert_section(),
+            render_template(
+                "/nsd/nsd_bdba_table_section.html",
+                vals=nsd_object.bdba_extract_array(True, False),
+            ),
+            render_template(
+                "/nsd/nsd_verbose_table_section.html", t=nsd_object.verbose_output()
+            ),
+            render_template(
+                "/nsd/nsd_mondrian_section.html",
+                mondrian_fig=nsd_object.mondrian(cmap="random"),
+            ),
+        ]
+    )
+
+    html = render_template(
+        "/nsd/nsd_html_template_v5.html",
+        pdbpath=refcode.upper(),
+        time=ctime(time()),
+        nsd=nsd_object.nsd_matrix,
+        skeletal_fig=nsd_object.nsd_fig(),
+        extras=nsd_object.extras("large", True, False, "random"),
+    )
+    return html
 
 @app.route("/", methods=["GET"])
 def index():
@@ -70,8 +205,9 @@ def scsd_out():
             data.get("basinhopping") == "True", by_graph=data.get("by_graph") == "True"
         )
         extras = scsd_obj.compare_table(data_path=dfs_path) + render_template(
-            "/scsd/scsd_hidden_raw_data_section.html", raw_data=scsd_obj.raw_data(),
-            table_ident='raw_data'
+            "/scsd/scsd_hidden_raw_data_section.html",
+            raw_data=scsd_obj.raw_data(),
+            table_ident="raw_data",
         )
 
         template = "/scsd/scsd_html_template_v2.html"
@@ -109,7 +245,7 @@ def scsd_ccdc_out(refcode):
             "df_name"
         ].values[0]
     except IndexError:
-        return f'{refcode} {refcode.upper()}: Refcode not found in precomputed databases - use ./scsd'
+        return f"{refcode} {refcode.upper()}: Refcode not found in precomputed databases - use ./scsd"
 
     model = scsd.model_objs_dict.get(df_name, False)
     if isinstance(model, bool):
@@ -135,7 +271,7 @@ def scsd_ccdc_out(refcode):
     extras = extras + render_template(
         "/scsd/scsd_hidden_raw_data_section.html",
         raw_data=scsd_obj.raw_data(),
-        table_ident='raw_data'
+        table_ident="raw_data",
     )
     data = {"model_name": model.name, "refcode": refcode}
     template = "/scsd//scsd_html_template_v2.html"
@@ -173,7 +309,7 @@ def scsd_ccdc_recalc(refcode):
     try:
         df = read_pickle(dfs_path / model.database_path)
     except FileNotFoundError:
-        return "Database not on this server - contact Chris Kingsbury at ckingsbu@tcd.ie for data"
+        return "Database not on this server - contact Chris Kingsbury at ckingsbury@ccdc.cam.ac.uk for data"
     # scsd_obj = scsd.scsd_matrix(df[df['NAME'].isin([refcode, refcode.upper()])]['coords_matrix'].values[0], model)
     dfrow = df[df["name"].isin([refcode, refcode.upper()])]
     scsd_obj = scsd.scsd_matrix(dfrow["coords"].values[0], model)
@@ -187,8 +323,9 @@ def scsd_ccdc_recalc(refcode):
     else:
         extras = scsd_obj.compare_table(data_path=dfs_path)
     extras = extras + render_template(
-        "/scsd/scsd_hidden_raw_data_section.html", raw_data=scsd_obj.raw_data(),
-        table_ident='raw_data'
+        "/scsd/scsd_hidden_raw_data_section.html",
+        raw_data=scsd_obj.raw_data(),
+        table_ident="raw_data",
     )
     data = {"model_name": model.name, "refcode": refcode}
     template = "/scsd/scsd_html_template_v2.html"
@@ -228,7 +365,7 @@ def scsd_ccdc_random():
     try:
         df = read_pickle(dfs_path / model.database_path)
     except FileNotFoundError:
-        return "Database not on this server - contact Chris Kingsbury at ckingsbu@tcd.ie for data"
+        return "Database not on this server - contact Chris Kingsbury at ckingsbury@ccdc.cam.ac.uk for data"
     dfrow = df[df["name"].isin([refcode, refcode.upper()])]
     scsd_obj = scsd.scsd_matrix(dfrow["coords"].values[0], model)
     scsd_obj.calc_scsd(False, bypass=True)
@@ -239,8 +376,9 @@ def scsd_ccdc_random():
     else:
         extras = scsd_obj.compare_table(data_path=dfs_path)
     extras = extras + render_template(
-        "/scsd/scsd_hidden_raw_data_section.html", raw_data=scsd_obj.raw_data(),
-        table_ident='raw_data'
+        "/scsd/scsd_hidden_raw_data_section.html",
+        raw_data=scsd_obj.raw_data(),
+        table_ident="raw_data",
     )
     data = {"model_name": model.name, "refcode": refcode}
     template = "/scsd//scsd_html_template_v2.html"
@@ -291,15 +429,16 @@ def scsd_mod_out():
         for_mod_usr = ["\n#" + f.filename + " " + model_name + " " + tstamp]
         for_mod_usr.append(model.importable())
 
-        user_model_filepath = fpath / "scsd_models_user.py"
+        user_model_filepath = lib_folder / "scsd_models_user.py"
         f2 = open(user_model_filepath, "a")
         f2.writelines("\n".join(for_mod_usr))
         f2.close()
         reload(scsd_models_user)
 
         extras = render_template(
-            "/scsd/scsd_hidden_raw_data_section.html", raw_data="\n".join(for_mod_usr),
-            table_ident='raw_data'
+            "/scsd/scsd_hidden_raw_data_section.html",
+            raw_data="\n".join(for_mod_usr),
+            table_ident="raw_data",
         )
 
         # template = model_templates.get(data.get('model_name'),'/scsd_html_template_v2.html')
@@ -325,7 +464,7 @@ def scsd_mod_lookup(model_name):
     extras = render_template(
         "/scsd/scsd_hidden_raw_data_section.html",
         raw_data="\n".join(["#" + model_name + " " + tstamp, model.importable()]),
-        table_ident='raw_data'
+        table_ident="raw_data",
     )
 
     if model.database_path is not None:
@@ -364,7 +503,7 @@ def scsd_mod_ext(model_name):
     extras = render_template(
         "/scsd/scsd_hidden_raw_data_section.html",
         raw_data="\n".join(["#" + model_name + " " + tstamp, model.importable()]),
-        table_ident='raw_data'
+        table_ident="raw_data",
     )
 
     if model.database_path is not None:
@@ -379,7 +518,7 @@ def scsd_mod_ext(model_name):
                 raw_data="\n".join(
                     ["#" + model_name + " " + tstamp, model.importable()]
                 ),
-                table_ident='raw_data'
+                table_ident="raw_data",
             )
 
             df = coll.gen_complex_df()
@@ -457,144 +596,37 @@ def scsd_mod_all():
     return html
 
 
-#
-# @app.route("/nsd", methods=["GET"])
-# def upload_file():
-#    return render_template(
-#        "/nsd/nsd_uploader.html",
-#        nsdlogopath=url_for("static", filename="nsdlogo.png"),
-#        sengelogopath=url_for("static", filename="sengelogo.jpg"),
-#    )
-#
-#
-# @app.route("/nsd_output", methods=["GET", "POST"])
-# def uploaded_file():
-#    if request.method == "POST":
-#        f = request.files["file"]
-#        data = request.form
-#        tstamp = str(int(time()))
-#        f.save(u_folder + f.filename)
-#
-#        if data.get("IUPAC_numbering"):
-#            nsd_object = nsd.nsd_obj(
-#                filenm=u_folder + f.filename, calctype="correct_numbering"
-#            )
-#        elif data.get("errorbars"):
-#            nsd_object = nsd.nsd_obj(filenm=u_folder + f.filename, calctype="errorbars")
-#        else:
-#            nsd_object = nsd.nsd_obj(filenm=u_folder + f.filename, calctype="pdb")
-#        nsd_object.calc_nsd()
-#
-#        nsd.write_logfile(f.filename, nsd_object.nsd_matrix, u_folder[:-5] + "logfile.txt")
-#
-#        html = render_template(
-#            "/nsd/nsd_html_template_v5.html",
-#            pdbpath=f.filename,
-#            time=ctime(time()),
-#            nsd=nsd_object.nsd_matrix,
-#            skeletal_fig=nsd_object.nsd_fig(),
-#            extras=nsd_object.extras(
-#                data["validtype"],
-#                data.get("rounding"),
-#                data.get("keith"),
-#                cmap=data.get("cmap"),
-#            ),
-#        )
-#
-#        if data["outtype"] == "html":
-#            return html
-#        elif data["outtype"] == "pdf":
-#            return html
-#            #return render_pdf(
-#            #    HTML(string=html), download_filename=f.filename[:-4] + "_nsd.pdf"
-#            #)
-#            # return redirect(url_for('nsd'))
-#
-#
-# @app.route("/nsd_ccdc", methods=["GET"])
-# def upload_file_ccdc():
-#    return render_template("/nsd/nsd_ccdc_uploader.html")
-#
-#
-# fail_html = "Structure not in database (v2020.1) check structure code"
-#
-#
-# @app.route("/nsd_output_ccdc", methods=["GET", "POST"])
-# def uploaded_file_ccdc():
-#    if request.method == "POST":
-#        data = request.form
-#        tstamp = str(int(time()))
-#        try:
-#            nsd_object = nsd.nsd_obj(refcode=data.get("NAME_str").upper(), calctype="ccdc")
-#            nsd_object.calc_nsd()
-#        except IndexError:
-#            return fail_html
-#
-#        html = render_template(
-#            "/nsd/nsd_html_template_v5.html",
-#            pdbpath=data.get("NAME_str").upper(),
-#            time=ctime(time()),
-#            nsd=nsd_object.nsd_matrix,
-#            skeletal_fig=nsd_object.nsd_fig(),
-#            extras=nsd_object.extras(
-#                data["validtype"],
-#                data.get("rounding"),
-#                data.get("keith"),
-#                cmap=data.get("cmap"),
-#            ),
-#        )
-#        if data["outtype"] == "html":
-#            return html
-#        elif data["outtype"] == "pdf":
-#            return html
-#            #return render_pdf(
-#            #    HTML(string=html),
-#            #    download_filename=data.get("NAME_str").upper() + "_nsd.pdf",
-#            #)
-#            # return redirect(url_for('nsd'))
-#
-#
-# @app.route("/nsd/<refcode>", methods=["GET", "POST"])
-# def database_direct_ccdc(refcode):
-#    try:
-#        nsd_object = nsd.nsd_obj(refcode=refcode.upper(), calctype="ccdc")
-#        nsd_object.calc_nsd()
-#    except IndexError:
-#        return fail_html
-#
-#    extras = "\n".join(
-#        [
-#            nsd_object.alert_section(),
-#            render_template(
-#                "/nsd/nsd_bdba_table_section.html",
-#                vals=nsd_object.bdba_extract_array(True, False),
-#            ),
-#            render_template(
-#                "/nsd/nsd_verbose_table_section.html", t=nsd_object.verbose_output()
-#            ),
-#            render_template(
-#                "/nsd/nsd_mondrian_section.html",
-#                mondrian_fig=nsd_object.mondrian(cmap="random"),
-#            ),
-#        ]
-#    )
-#
-#    html = render_template(
-#        "/nsd/nsd_html_template_v5.html",
-#        pdbpath=refcode.upper(),
-#        time=ctime(time()),
-#        nsd=nsd_object.nsd_matrix,
-#        skeletal_fig=nsd_object.nsd_fig(),
-#        extras=nsd_object.extras("large", True, False, "random"),
-#    )
-#    return html
-#
-# fail_html = "Structure not in database (v2020.1) check structure code"
+@app.route("/coord_table_ref_str_mat")
+def return_table():
+    return send_from_directory("", "/coord_table_ref_str_mat.html")
+
+
+@app.route("/bdba_defs")
+def return_bdba_defs():
+    return send_from_directory("", "/bdba_defs.html")
+
+
+@app.route("/nsd_common_issues")
+def return_common_issues():
+    return send_from_directory("", "/nsd_common_issues.html")
+
+
+@app.route("/alert_defs")
+def return_alert_defs():
+    return send_from_directory("", "/alert_defs.html")
+
+
+@app.route("/database_structure_refcodes")
+def return_db_refcodes():
+    return send_from_directory("", "/database_structure_refcodes.html")
+
+def start_server():
+    import webbrowser
+    from . import refresh_dfs
+
+    webbrowser.open_new("http://localhost:5050/scsd_random")
+    app.run(host="0.0.0.0", port=5050)
+
 
 if __name__ == "__main__":
-    import refresh_dfs
-
-    app.debug = True
-    #    import webbrowser
-    #    webbrowser.open_new("http://127.0.0.1:5050/scsd")
-    app.run()
+    start_server()

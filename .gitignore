@@ -2,4 +2,7 @@
 /dist
 /scsd.egg-info
 /.idea
-
+*pyc
+/example/notebooks/other
+/example/notebooks/.*
+run_webserver.py

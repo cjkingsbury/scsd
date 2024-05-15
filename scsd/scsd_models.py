@@ -1,4 +1,8 @@
 
+#
+# This work is licensed under THE ANTI-CAPITALIST SOFTWARE LICENSE (v 1.4) 
+# To view a copy of this license, visit https://directory.fsf.org/wiki/License:ANTI-1.4
+
 from numpy import dot, outer, argsort, array, sin, cos, hstack, sum as npsum, square, diagonal, subtract, cross, argmin, round as npround, atleast_2d, vstack, reshape, shape, unique, where, floor
 from numpy.linalg import norm
 from scipy.optimize import linear_sum_assignment

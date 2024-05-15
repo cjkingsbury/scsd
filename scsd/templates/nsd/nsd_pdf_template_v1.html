@@ -1,0 +1,81 @@
+<link rel= "stylesheet" type= "text/css" href= "{{url_for('static',filename='styles/nsd_pdf_css.css') }}">
+
+<body>
+<p>NSD result generated from file {{pdbpath}} at {{time}} <br>
+
+    Summary of the NSD (in &#8491;):</p>
+    
+<table id='tableip'>
+     <tr><th>basis	</th>
+     <th>&Delta;<sub>ip</sub>	</th>
+     <th>&delta;<sub>ip</sub>	</th>
+     <th>B<sub>2g</sub> 		</th>
+     <th>B<sub>1g</sub> 		</th>
+     <th>E<sub>u</sub>(x)		</th>
+     <th>E<sub>u</sub>(y)		</th>
+     <th>A<sub>1g</sub> 		</th>
+     <th>A<sub>2g</sub>         </th></tr>
+     
+    <tr><td>min.	</td><td>{{ip1[6]}}	</td><td>{{ip1[7]}}	</td><td>{{ip1[0]}}	</td><td>{{ip1[1]}}	</td><td>{{ip1[2]}}	</td><td>{{ip1[3]}}	</td><td>{{ip1[4]}}	</td><td>{{ip1[5]}}	</td></tr>
+    <tr><td>ext.	</td><td>{{ip2[12]}}	</td><td>{{ip2[13]}}	</td><td>{{ip2[0]}}	</td><td>{{ip2[2]}}	</td><td>{{ip2[4]}}	</td><td>{{ip2[6]}}	</td><td>{{ip2[8]}}	</td><td>{{ip2[10]}}	</td></tr>
+    <tr><td>        </td><td>           </td><td>         	</td><td>{{ip2[1]}}	</td><td>{{ip2[3]}}	</td><td>{{ip2[5]}}	</td><td>{{ip2[7]}}	</td><td>{{ip2[9]}}	</td><td>{{ip2[11]}}	</td></tr>
+    <tr><td>total	</td><td>{{ip4[45]}}	</td><td>{{ip4[46]}}	</td><td>{{ip4[0]}}	</td><td>{{ip4[6]}}	</td><td>{{ip4[12]}}	</td><td>{{ip4[23]}}	</td><td>{{ip4[34]}}	</td><td>{{ip4[40]}}	</td></tr>
+    <tr><td>        </td><td>           </td><td>         	</td><td>{{ip4[1]}}	</td><td>{{ip4[7]}}	</td><td>{{ip4[13]}}	</td><td>{{ip4[24]}}	</td><td>{{ip4[35]}}	</td><td>{{ip4[41]}}	</td></tr>
+    <tr><td>        </td><td>           </td><td>         	</td><td>{{ip4[2]}}	</td><td>{{ip4[8]}}	</td><td>{{ip4[14]}}	</td><td>{{ip4[25]}}	</td><td>{{ip4[36]}}	</td><td>{{ip4[42]}}	</td></tr>
+    <tr><td>        </td><td>           </td><td>         	</td><td>{{ip4[3]}}	</td><td>{{ip4[9]}}	</td><td>{{ip4[15]}}	</td><td>{{ip4[26]}}	</td><td>{{ip4[37]}}	</td><td>{{ip4[43]}}	</td></tr>
+    <tr><td>        </td><td>           </td><td>         	</td><td>{{ip4[4]}}	</td><td>{{ip4[10]}}	</td><td>{{ip4[16]}}	</td><td>{{ip4[27]}}	</td><td>{{ip4[38]}}	</td><td>{{ip4[44]}}	</td></tr>
+    <tr><td>        </td><td>           </td><td>         	</td><td>{{ip4[5]}}	</td><td>{{ip4[11]}}	</td><td>{{ip4[17]}}	</td><td>{{ip4[28]}}	</td><td>{{ip4[39]}}	</td><td>           </td></tr>
+    <tr><td>        </td><td>           </td><td>           </td><td>           </td><td>           </td><td>{{ip4[18]}}	</td><td>{{ip4[29]}}	</td><td>           </td><td>           </td></tr>
+    <tr><td>        </td><td>           </td><td>           </td><td>           </td><td>           </td><td>{{ip4[19]}}	</td><td>{{ip4[30]}}	</td><td>           </td><td>           </td></tr>
+    <tr><td>        </td><td>           </td><td>           </td><td>           </td><td>           </td><td>{{ip4[20]}}	</td><td>{{ip4[31]}}	</td><td>           </td><td>           </td></tr>
+    <tr><td>        </td><td>           </td><td>           </td><td>           </td><td>           </td><td>{{ip4[21]}}	</td><td>{{ip4[32]}}	</td><td>           </td><td>           </td></tr>
+    <tr><td>        </td><td>           </td><td>           </td><td>           </td><td>           </td><td>{{ip4[22]}}	</td><td>{{ip4[33]}}	</td><td>           </td><td>           </td></tr>
+    <tr><td>comp.	</td><td>{{ip3[6]}}	</td><td>{{ip3[7]}}	</td><td>{{ip3[0]}}	</td><td>{{ip3[1]}}	</td><td>{{ip3[2]}}	</td><td>{{ip3[3]}}	</td><td>{{ip3[4]}}	</td><td>{{ip3[5]}}	</td></tr>
+    
+    </table>
+	<br>
+    <table id='tableoop'>
+    
+     <tr><th>basis	</th>
+     <th>&Delta;<sub>oop</sub>	</th>
+     <th>&delta;<sub>oop</sub>	</th>
+     <th>B<sub>2u</sub> 		</th>
+     <th>B<sub>1u</sub> 		</th>
+     <th>A<sub>2u</sub>         </th>
+     <th>E<sub>g</sub>(x)		</th>
+     <th>E<sub>g</sub>(y)		</th>
+     <th>A<sub>1u</sub> 		</th></tr>
+
+    <tr><td>min.	</td><td>{{oop1[6]}}	</td><td>{{oop1[7]}}	</td><td>{{oop1[0]}}	</td><td>{{oop1[1]}}	</td><td>{{oop1[2]}}	</td><td>{{oop1[3]}}	</td><td>{{oop1[4]}}	</td><td>{{oop1[5]}}	     </tr>
+    <tr><td>ext.	</td><td>{{oop2[12]}}	</td><td>{{oop2[13]}}	</td><td>{{oop2[0]}}	</td><td>{{oop2[2]}}	</td><td>{{oop2[4]}}	</td><td>{{oop2[6]}}	</td><td>{{oop2[8]}}	</td><td>{{oop2[10]}}	     </tr>
+    <tr><td>        </td><td>           </td><td>         	</td><td>{{oop2[1]}}	</td><td>{{oop2[3]}}	</td><td>{{oop2[5]}}	</td><td>{{oop2[7]}}	</td><td>{{oop2[9]}}	</td><td>{{oop2[11]}}	     </tr>
+    <tr><td>total	</td><td>{{oop4[21]}}	</td><td>{{oop4[22]}}	</td><td>{{oop4[0]}}	</td><td>{{oop4[3]}}	</td><td>{{oop4[6]}}	</td><td>{{oop4[9]}}	</td><td>{{oop4[14]}}	</td><td>{{oop4[19]}}	     </tr>
+    <tr><td>        </td><td>           </td><td>         	</td><td>{{oop4[1]}}	</td><td>{{oop4[4]}}	</td><td>{{oop4[7]}}	</td><td>{{oop4[10]}}	</td><td>{{oop4[15]}}	</td><td>{{oop4[20]}}	     </tr>
+    <tr><td>        </td><td>           </td><td>         	</td><td>{{oop4[2]}}	</td><td>{{oop4[5]}}	</td><td>{{oop4[8]}}	</td><td>{{oop4[11]}}	</td><td>{{oop4[16]}}	</td><td>                </tr>
+    <tr><td>        </td><td>           </td><td>           </td><td>           </td><td>           </td><td>			</td><td>{{oop4[12]}}	</td><td>{{oop4[17]}}	</td><td>                </tr>
+    <tr><td>        </td><td>           </td><td>           </td><td>           </td><td>           </td><td>			</td><td>{{oop4[13]}}	</td><td>{{oop4[18]}}	</td><td>                </tr>
+    <tr><td>comp.	</td><td>{{oop3[6]}}	</td><td>{{oop3[7]}}	</td><td>{{oop3[0]}}	</td><td>{{oop3[1]}}	</td><td>{{oop3[2]}}	</td><td>{{oop3[3]}}	</td><td>{{oop3[4]}}	</td><td>{{oop3[5]}}	     </tr>
+    
+    </table>
+    
+<p>
+<img id = 'skeletal' src={{image1path}} alt="nsd_plots">
+</p>
+<p id='pbot'>
+<caption>
+Figure 1; (a) out-of-plane and (b) in-plane skeletal plots of the porphyrin core. 
+<br>
+Porphyrin is represented in black(C) and blue(N), with the reference structure (CuTPP) in red 
+dotted lines.
+</caption>
+</p>
+
+{{extras|safe}}
+<p>
+Document prepared by the porphyrin NSD online tool – chemistry.tcd.ie/staff/people/mos/NSD 
+<br>
+ Dr. C. J. Kingsbury, Prof. Dr. M. O. Senge (2020) - ckingsbu@tcd.ie
+<br>
+W. Jentzen, X. Z. Song, and J. A. Shelnutt, <b>1997</b>, <i>J. Phys. Chem. B, 101,</i> 9, 1684–1699.
+</p>
+</body>

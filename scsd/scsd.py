@@ -2,22 +2,9 @@
 # written by Dr. Christopher J. Kingsbury, Trinity College Dublin, with Prof. Dr. Mathias O. Senge
 # cjkingsbury@gmail.com / www.kingsbury.id.au
 #
-# This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
-# To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/ or send a letter to
-# Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
-#
-# To Do List:
-# make 3-fold axis PCAs make sense - there isn't uniformity, and no way to 'normalise' currently
-# comments on the main program aspects
-# remove the * imports
-#
-# Extras
-# some way of generating and preserving custom models for users - done 27/9
-# Figure an easy webserver upload for the new data/version - done 15/3
-# update scsd_direct and easy_database_gen to the new program version - done 15/5
-# "Lacunary" - how to model when a part is missing? The FeMoco is part of this, I guess
+# This work is licensed under THE ANTI-CAPITALIST SOFTWARE LICENSE (v 1.4) 
+# To view a copy of this license, visit https://directory.fsf.org/wiki/License:ANTI-1.4
 
-# Paths - turn into relative paths at some point
 from os.path import dirname, abspath
 from pathlib import Path
 
@@ -138,6 +125,27 @@ safe_cmaps = [
 ]
 safe_cmaps = safe_cmaps + [x + "_r" for x in safe_cmaps]
 good_cmaps = good_cmaps + safe_cmaps
+
+atoms_color_dict = {
+    "C": "black",
+    "H": "white",
+    "N": "cornflowerblue",
+    "S": "yellow",
+    "O": "red",
+    "Cs": "grey",
+    "Li": "violet",
+    "Cl": "green",
+    "F": "lime",
+    "Fe": "firebrick",
+    "Mn": "magenta",
+    "P": "orange",
+    "Br": "maroon",
+    "I": "darkviolet",
+    "Na": "purple",
+    "K": "violet",
+    "B": "pink",
+    "Cu": "lightblue",
+}
 
 
 # Numerical transforms - these are generally faster than the equivalent implementation through scipy.spatial
@@ -2462,6 +2470,8 @@ class scsd_collection:
 def pdb_link(s):
     return "<a href = https://www.rcsb.org/structure/{}>{}</a>".format(s, s)
 def ccdc_link(s):
+    if "_" in s:
+        return "<a href = https://www.ccdc.cam.ac.uk/structures/Search?Ccdcid={}&DatabaseToSearch=Published>{}</a>".format(s[s.rfind("_") + 1:], s)
     return "<a href = https://www.ccdc.cam.ac.uk/structures/Search?Ccdcid={}&DatabaseToSearch=Published>{}</a>".format(s, s)
 def kb_link(s):
     return "<a href = /scsd/{}>{}</a>".format(s, s)
@@ -2862,12 +2872,16 @@ class scsd_model:
             + "</table>"
         )
 
-    def plotly_plot_model(self):
+    def plotly_plot_model(self, conformation = None):
         line_thru = generate_line_thru_points(self.ats_3, self.maxdist)
 
         if len(self.ats.T) == 3:
-            a = self.ats_3[line_thru].T
-            b = self.ats_3.T
+            if isinstance(conformation, np.ndarray):
+                a = conformation[line_thru].T
+                b = conformation.T
+            else:   
+                a = self.ats_3[line_thru].T
+                b = self.ats_3.T
             fig = go.Figure()
             fig.add_trace(
                 go.Scatter3d(
@@ -2891,26 +2905,21 @@ class scsd_model:
                 )
             )
         if len(self.ats.T) == 4:
-            at_colors = {
-                "C": "gray",
-                "N": "cornflowerblue",
-                "S": "goldenrod",
-                "O": "red",
-                "H": "floralwhite",
-                "P": "brown",
-            }
-            a, b = self.ats_3[line_thru].T, self.ats.T
+            if isinstance(conformation, np.ndarray):
+                a, b = conformation[line_thru].T, conformation.T
+            else:   
+                a, b = self.ats_3[line_thru].T, self.ats.T
             fig = go.Figure()
             for index, atype in enumerate(np.unique(b[3])):
                 d = b[:3, np.where(b[3] == atype)[0]].astype(float)
-                if atype in at_colors.keys():
+                if atype in atoms_color_dict.keys():
                     fig.add_trace(
                         go.Scatter3d(
                             x=d[0],
                             y=d[1],
                             z=d[2],
                             mode="markers",
-                            marker={"color": at_colors.get(atype)},
+                            marker={"color": atoms_color_dict.get(atype, 'pink')},
                             name=atype,
                             legendgroup="Model",
                         )
@@ -3136,6 +3145,20 @@ class scsd_model:
             return "".join([f"{a}<sub>{str(b)}</sub>" for a, b in zip(*uq)])
         else:
             return ""
+        
+    def generate_conformation(self, mode_magnitudes={}):
+        conformation = np.array(self.ats_3).astype(float)
+        for key, values in mode_magnitudes.items():
+            for ix, mag in enumerate(list(values)):
+                conformation = conformation + (self.pca.get(key,0)[ix] * mag).reshape(np.shape(conformation))
+        if len(self.ats[0]) == 4:
+            return np.hstack((conformation, self.ats[:,3:]))
+        else:
+            return conformation
+
+    def visualize_conformation(self, mode_magnitudes={}): 
+        conformation = self.generate_conformation(mode_magnitudes)
+        return self.plotly_plot_model(conformation=conformation)
 
 
 from pathlib import Path

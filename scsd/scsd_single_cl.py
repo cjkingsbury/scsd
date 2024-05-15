@@ -1,23 +1,10 @@
 #
-# This script can be used for any purpose without limitation subject to the
-# conditions at http://www.ccdc.cam.ac.uk/Community/Pages/Licences/v2.aspx
-#
-# This permission notice and the following statement of attribution must be
-# included in all copies or substantial portions of this script.
-#
-# 2023-04-25 Created by Chris Kingsbury, the Cambridge Crystallographic Data Centre
-# ORCID 0000-0002-4694-5566
-#
 # scsd - Symmetry-Coordinate Structural Decomposition for molecules
 # written by Dr. Christopher J. Kingsbury, Trinity College Dublin, with Prof. Dr. Mathias O. Senge
 # cjkingsbury@gmail.com / www.kingsbury.id.au
 #
-# This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
-# To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/ or send a letter to
-# Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
-#
-#
-#
+# This work is licensed under THE ANTI-CAPITALIST SOFTWARE LICENSE (v 1.4) 
+# To view a copy of this license, visit https://directory.fsf.org/wiki/License:ANTI-1.4
 
 from os.path import abspath
 from numpy import array
@@ -25,8 +12,7 @@ import argparse
 from ccdc.io import MoleculeReader
 
 from pandas import DataFrame
-from scsd.scsd import scsd_matrix
-from scsd.scsd import model_objs_dict, scsd_model
+from scsd.scsd import scsd_matrix, model_objs_dict, scsd_model
 
 def run_scsd_single_cl():
     parser = argparse.ArgumentParser()
@@ -57,7 +43,7 @@ def run_scsd_single_cl():
             source = csd_reader.molecule(ident.upper())
             source.assign_bond_types(which='unknown')
 
-        #dfs_path = settings.get('dfs_path', '')
+        # dfs_path = settings.get('dfs_path', '')
 
         ats = array([[*x.coordinates,x.atomic_symbol] for x in source.atoms])
         model = model_objs_dict.get(args.model,None)
