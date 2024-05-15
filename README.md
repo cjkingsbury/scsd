@@ -56,8 +56,9 @@ scsd_collection_mercury.py and scsd_single_cl.py contain methods to import data 
 - werkzeug
 - ccdc
 
-### This work is licensed under CC BY-NC-SA 4.0. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/ 
-### Commercial or military use is forbidden.
+### This work is licensed under THE ANTI-CAPITALIST SOFTWARE LICENSE (v 1.4) 
+To view a copy of this license, visit https://directory.fsf.org/wiki/License:ANTI-1.4
+Commercial or military use is forbidden.
 
 Please contact Chris Kingsbury (ckingsbury@ccdc.cam.ac.uk) for collaboration or with any questions
 
