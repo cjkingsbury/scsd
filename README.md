@@ -9,7 +9,9 @@ The scsd (symmetry-coordinate structural decomposition) program is a method of d
 
 The latest version can be downloaded using the following command:
 
-> pip install scsd
+```bash
+conda install -c conda-forge scsd
+ ```
 
 This program can be accessed through a notebook interface by importing the underlying module. Many users may find operating through the web interface at https://www.kingsbury.id.au/scsd accessible and suitable. The analysis of known molecules can also be performed with scsd_mercury.py through the Mercury interface, with more information available on the ccdc-opensource repository (https://github.com/ccdc-opensource)
 
