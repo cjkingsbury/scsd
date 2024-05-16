@@ -1095,7 +1095,6 @@ class scsd_matrix:
             return self.scsd_simple
         if self.ptgr in [
             "C3v",
-            "D2d",
             "D3d",
             "D3h",
             "D4d",
