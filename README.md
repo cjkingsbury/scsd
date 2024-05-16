@@ -9,7 +9,7 @@ The scsd (symmetry-coordinate structural decomposition) program is a method of d
 
 The latest version can be downloaded using the following command:
 
-> pip install scsdpy
+> pip install scsd
 
 This program can be accessed through a notebook interface by importing the underlying module. Many users may find operating through the web interface at https://www.kingsbury.id.au/scsd accessible and suitable. The analysis of known molecules can also be performed with scsd_mercury.py through the Mercury interface, with more information available on the ccdc-opensource repository (https://github.com/ccdc-opensource)
 
@@ -65,13 +65,7 @@ Please contact Chris Kingsbury (ckingsbury@ccdc.cam.ac.uk) for collaboration or 
 ### Ongoing issues
 
 To Do List:
-- make 3-fold axis PCAs make sense - there isn't uniformity, and no way to 'normalise' currently
-- comments on the main program aspects
-- "Lacunary" - how to model when a part is missing? FeMoCo is part of this
-- extend sensibly to O<sub>h</sub> ... ongoing work
-
-- some way of generating and preserving custom models for users - done 27/9/21
-- Figure an easy webserver upload for the new data/version - done 15/3/22
-- update scsd_direct and easy_database_gen to the new program version - done 15/5/22
-- remove the * imports - done 13/5/24
-- Paths - turn into relative paths at some point - done 11/5/24
+- [ ] make 3-fold axis PCAs make sense - there isn't uniformity, and no way to 'normalise' currently
+- [ ] comments on the main program aspects
+- [ ] "Lacunary" - how to model when a part is missing? FeMoCo is part of this
+- [ ] extend sensibly to O<sub>h</sub> ... ongoing work

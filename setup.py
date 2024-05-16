@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='scsd',
-      version='0.1',
+      version='0.1.0',
       packages=find_packages(),
       install_requires=[
           'numpy>=1.16.2',
@@ -16,7 +16,9 @@ setup(name='scsd',
           'werkzeug>=3.0.3'
       ],
       author='Dr Christopher Kingsbury',
+      license='ANTI-1.4',
       description='Scientific Data Analysis Toolkit',
-      long_description='Scientific Data Analysis Toolkit',
-      platforms=['linux', 'windows', 'osx', 'cygwin', 'win32'],
-      package_data={'scsd': ['data/*','data/scsd/*', 'templates/scsd/*', 'static/*','scsd_models.json']}, )
+      long_description='SCSD is Python software for the analysis of molecular conformation and deformation in crystal structures',
+      platforms=['linux', 'windows', 'osx', 'win32'],
+      package_data={'scsd': ['data/*', 'data/scsd/*', 'templates/scsd/*', 'static/*', 'scsd_models.json']}
+      )
