@@ -58,13 +58,13 @@ scsd_collection_mercury.py and scsd_single_cl.py contain methods to import data 
 - werkzeug
 - ccdc
 
-### This work is licensed under THE ANTI-CAPITALIST SOFTWARE LICENSE (v 1.4) 
+## This work is licensed under THE ANTI-CAPITALIST SOFTWARE LICENSE (v 1.4) 
 To view a copy of this license, visit https://directory.fsf.org/wiki/License:ANTI-1.4
 Commercial or military use is forbidden.
 
 Please contact Chris Kingsbury (ckingsbury@ccdc.cam.ac.uk) for collaboration or with any questions
 
-### Ongoing issues
+## Ongoing issues
 
 To Do List:
 - [ ] make 3-fold axis PCAs make sense - there isn't uniformity, and no way to 'normalise' currently
