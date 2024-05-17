@@ -1,4 +1,4 @@
-# This work is licensed under THE ANTI-CAPITALIST SOFTWARE LICENSE (v 1.4) 
+# This work is licensed under THE ANTI-CAPITALIST SOFTWARE LICENSE (v 1.4)
 # To view a copy of this license, visit https://directory.fsf.org/wiki/License:ANTI-1.4
 
 from os import getcwd
@@ -40,6 +40,12 @@ from pathlib import Path
 
 u_folder = os.path.join(lib_folder, "data", "temp")
 dfs_path = os.path.join(lib_folder, "data", "scsd")
+
+# Note that this will require the user to have Admin rights if they've installed the Env on C Drive.
+# The same will be true if the lib will write to the env it's been installed it.
+# It needs a working directory/lib put somewhere
+if not os.path.isdir(u_folder):
+    os.mkdir(u_folder)
 dfs_path += r"/"
 u_folder += r"/"
 
