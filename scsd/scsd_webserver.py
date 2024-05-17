@@ -10,6 +10,7 @@ from datetime import date
 from importlib import reload
 from pathlib import Path
 from time import time, ctime
+import json
 
 from flask import (
     Flask,
@@ -302,10 +303,10 @@ def scsd_ccdc_recalc(refcode):
         ].values[0]
     except IndexError:
         return (
-                refcode
-                + " "
-                + refcode.upper()
-                + ": Refcode not found in precomputed databases - use ./scsd"
+            refcode
+            + " "
+            + refcode.upper()
+            + ": Refcode not found in precomputed databases - use ./scsd"
         )
     model = scsd.model_objs_dict.get(df_name, False)
     if isinstance(model, bool):
@@ -357,10 +358,10 @@ def scsd_ccdc_random():
         ].values[0]
     except IndexError:
         return (
-                refcode
-                + " "
-                + refcode.upper()
-                + ": Refcode not found in precomputed databases - use ./scsd"
+            refcode
+            + " "
+            + refcode.upper()
+            + ": Refcode not found in precomputed databases - use ./scsd"
         )
     print(refcode, df_name)
     model = scsd.model_objs_dict.get(df_name, False)
@@ -439,6 +440,8 @@ def scsd_mod_out():
         f2.close()
         reload(scsd_models_user)
 
+        for_mod_usr.append(json.dumps(model.to_dict()))
+
         extras = render_template(
             "/scsd/scsd_hidden_raw_data_section.html",
             raw_data="\n".join(for_mod_usr),
@@ -467,7 +470,13 @@ def scsd_mod_lookup(model_name):
     tstamp = str(date.today()).replace("-", "")
     extras = render_template(
         "/scsd/scsd_hidden_raw_data_section.html",
-        raw_data="\n".join(["#" + model_name + " " + tstamp, model.importable()]),
+        raw_data="\n".join(
+            [
+                "#" + model_name + " " + tstamp,
+                model.importable(),
+                json.dumps(model.to_dict()),
+            ]
+        ),
         table_ident="raw_data",
     )
 
@@ -476,14 +485,14 @@ def scsd_mod_lookup(model_name):
             df = read_pickle(dfs_path / model.database_path)
             link = "<a href = '/scsd/{x}'>{x}</a>"
             extras = (
-                    extras
-                    + "<br>"
-                    + ", ".join([link.format(x=refcode) for refcode in df["name"].values])
+                extras
+                + "<br>"
+                + ", ".join([link.format(x=refcode) for refcode in df["name"].values])
             )
         except FileNotFoundError:
             extras = (
-                    extras
-                    + "<br> Database not on this server - contact Chris Kingsbury at ckingsbury@ccdc.cam.ac.uk"
+                extras
+                + "<br> Database not on this server - contact Chris Kingsbury at ckingsbury@ccdc.cam.ac.uk"
             )
     html = render_template(
         "/scsd/scsd_model_report.html",
@@ -506,7 +515,9 @@ def scsd_mod_ext(model_name):
     tstamp = str(date.today()).replace("-", "")
     extras = render_template(
         "/scsd/scsd_hidden_raw_data_section.html",
-        raw_data="\n".join(["#" + model_name + " " + tstamp, model.importable()]),
+        raw_data="\n".join(
+            ["#" + model_name + " " + tstamp, model.importable(), model.to_dict()]
+        ),
         table_ident="raw_data",
     )
 
@@ -528,24 +539,24 @@ def scsd_mod_ext(model_name):
             df = coll.gen_complex_df()
             link = "<a href = '/scsd/{x}'>{x}</a>"
             extras = (
-                    extras
-                    + "<br>"
-                    + ", ".join([link.format(x=refcode) for refcode in df["name"].values])
+                extras
+                + "<br>"
+                + ", ".join([link.format(x=refcode) for refcode in df["name"].values])
             )
             try:
                 irs = coll.model.pca.keys()
             except AttributeError:
                 irs = coll.model.symm.pgt.keys()
             extras = (
-                    extras
-                    + "<br>"
-                    + ", ".join([coll.pca_kdeplot(x, as_type="html") for x in irs])
+                extras
+                + "<br>"
+                + ", ".join([coll.pca_kdeplot(x, as_type="html") for x in irs])
             )
 
         except FileNotFoundError:
             extras = (
-                    extras
-                    + "<br> Database not on this server - contact Chris Kingsbury at ckingsbury@ccdc.cam.ac.uk"
+                extras
+                + "<br> Database not on this server - contact Chris Kingsbury at ckingsbury@ccdc.cam.ac.uk"
             )
     html = render_template(
         "/scsd/scsd_model_report.html",

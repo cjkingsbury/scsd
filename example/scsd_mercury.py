@@ -104,9 +104,10 @@ model_heirarchy = {'tetrabenzopentacene':['naphthalene', 'anthracene', 'tetracen
                    'pentacene':['naphthalene', 'anthracene', 'tetracene'],
                    'tetracene':['naphthalene', 'anthracene'],
                    'anthracene':['naphthalene'],
+                   "naphthalenediimide":['naphthalene'],
                    'pyrene':['naphthalene', 'phenanthrene'],
                    'teropyrene':['pyrene','naphthalene', 'phenanthrene'],
-                   'porphyrin':['dipyrrin'],
+                   'porphyrin':['dipyrrin', 'chlorin', 'porphyrin_pdb', "CLA_pdb"],
                    "carbamazepine":['dibenzazepine'],
                    }
 
@@ -128,9 +129,6 @@ def scsd_mercury(settings=default_settings):
         if (model is None) or (model.smarts is None) or (name in skip_models):
             continue
 
-        if name in model_heirarchy.keys():
-            [skip_models.append(x) for x in model_heirarchy[name]]
-
         substructure_search = ccdc.search.SubstructureSearch()
         substructure_search.add_substructure(ccdc.search.SMARTSSubstructure(model.smarts))
         substructure_search.add_centroid("CENT1", *((0, x) for x in range(smarts_count(model.smarts))))
@@ -139,6 +137,8 @@ def scsd_mercury(settings=default_settings):
         interface.update_progress("trying " + model.name)
 
         if len(hits) > 0:
+            if name in model_heirarchy.keys():
+                [skip_models.append(x) for x in model_heirarchy[name]]
             interface.update_progress("found " + model.name)
             for ix, hit in enumerate(hits):
                 htmls.append(hit_to_html(hit, model, table_id=str(ix)))
