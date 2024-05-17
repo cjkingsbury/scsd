@@ -2,8 +2,14 @@
 # written by Dr. Christopher J. Kingsbury, Trinity College Dublin, with Prof. Dr. Mathias O. Senge
 # cjkingsbury@gmail.com / www.kingsbury.id.au
 #
-# This work is licensed under THE ANTI-CAPITALIST SOFTWARE LICENSE (v 1.4) 
+# This work is licensed under THE ANTI-CAPITALIST SOFTWARE LICENSE (v 1.4)
 # To view a copy of this license, visit https://directory.fsf.org/wiki/License:ANTI-1.4
+
+import os
+from datetime import date
+from importlib import reload
+from pathlib import Path
+from time import time, ctime
 
 from flask import (
     Flask,
@@ -13,20 +19,12 @@ from flask import (
     send_from_directory,
     url_for,
 )
-from datetime import date
-from importlib import reload
-from time import time, ctime
-
-import os
-from pandas import read_pickle
 from numpy import sqrt, random, unique
+from pandas import read_pickle
 
 from . import scsd
 from . import scsd_models_user
 from .nsd import nsd_obj, write_logfile
-
-
-from pathlib import Path
 
 lib_folder = Path(os.path.abspath(os.path.dirname(__file__)))
 
@@ -37,9 +35,14 @@ app = Flask(
     static_url_path="",
 )
 
-
 u_folder = lib_folder / "data" / "temp"
 dfs_path = lib_folder / "data" / "scsd"
+
+# Note that this will require the user to have Admin rights if they've installed the Env on C Drive.
+# The same will be true if the lib will write to the env it's been installed it.
+# It needs a working directory/lib put somewhere
+if not os.path.isdir(u_folder):
+    os.mkdir(u_folder)
 
 
 @app.route("/nsd", methods=["GET"])
@@ -173,6 +176,7 @@ def database_direct_ccdc(refcode):
     )
     return html
 
+
 @app.route("/", methods=["GET"])
 def index():
     return render_template("/scsd/scsd_uploader.html")
@@ -298,10 +302,10 @@ def scsd_ccdc_recalc(refcode):
         ].values[0]
     except IndexError:
         return (
-            refcode
-            + " "
-            + refcode.upper()
-            + ": Refcode not found in precomputed databases - use ./scsd"
+                refcode
+                + " "
+                + refcode.upper()
+                + ": Refcode not found in precomputed databases - use ./scsd"
         )
     model = scsd.model_objs_dict.get(df_name, False)
     if isinstance(model, bool):
@@ -353,10 +357,10 @@ def scsd_ccdc_random():
         ].values[0]
     except IndexError:
         return (
-            refcode
-            + " "
-            + refcode.upper()
-            + ": Refcode not found in precomputed databases - use ./scsd"
+                refcode
+                + " "
+                + refcode.upper()
+                + ": Refcode not found in precomputed databases - use ./scsd"
         )
     print(refcode, df_name)
     model = scsd.model_objs_dict.get(df_name, False)
@@ -472,14 +476,14 @@ def scsd_mod_lookup(model_name):
             df = read_pickle(dfs_path / model.database_path)
             link = "<a href = '/scsd/{x}'>{x}</a>"
             extras = (
-                extras
-                + "<br>"
-                + ", ".join([link.format(x=refcode) for refcode in df["name"].values])
+                    extras
+                    + "<br>"
+                    + ", ".join([link.format(x=refcode) for refcode in df["name"].values])
             )
         except FileNotFoundError:
             extras = (
-                extras
-                + "<br> Database not on this server - contact Chris Kingsbury at ckingsbury@ccdc.cam.ac.uk"
+                    extras
+                    + "<br> Database not on this server - contact Chris Kingsbury at ckingsbury@ccdc.cam.ac.uk"
             )
     html = render_template(
         "/scsd/scsd_model_report.html",
@@ -524,24 +528,24 @@ def scsd_mod_ext(model_name):
             df = coll.gen_complex_df()
             link = "<a href = '/scsd/{x}'>{x}</a>"
             extras = (
-                extras
-                + "<br>"
-                + ", ".join([link.format(x=refcode) for refcode in df["name"].values])
+                    extras
+                    + "<br>"
+                    + ", ".join([link.format(x=refcode) for refcode in df["name"].values])
             )
             try:
                 irs = coll.model.pca.keys()
             except AttributeError:
                 irs = coll.model.symm.pgt.keys()
             extras = (
-                extras
-                + "<br>"
-                + ", ".join([coll.pca_kdeplot(x, as_type="html") for x in irs])
+                    extras
+                    + "<br>"
+                    + ", ".join([coll.pca_kdeplot(x, as_type="html") for x in irs])
             )
 
         except FileNotFoundError:
             extras = (
-                extras
-                + "<br> Database not on this server - contact Chris Kingsbury at ckingsbury@ccdc.cam.ac.uk"
+                    extras
+                    + "<br> Database not on this server - contact Chris Kingsbury at ckingsbury@ccdc.cam.ac.uk"
             )
     html = render_template(
         "/scsd/scsd_model_report.html",
@@ -620,9 +624,9 @@ def return_alert_defs():
 def return_db_refcodes():
     return send_from_directory("", "/database_structure_refcodes.html")
 
+
 def start_server():
     import webbrowser
-    from . import refresh_dfs
 
     webbrowser.open_new("http://localhost:5050/scsd_random")
     app.run(host="0.0.0.0", port=5050)
